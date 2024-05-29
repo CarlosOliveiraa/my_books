@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 final lightTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
-    seedColor: Colors.deepPurple,
+    seedColor: const Color(0xff49f170),
     brightness: Brightness.light,
+    primary: const Color(0xff49f170),
   ),
   useMaterial3: true,
   extensions: const [],
