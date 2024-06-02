@@ -1,0 +1,8 @@
+# Ignorar o arquivo .env
+.env
+
+# Outros
+
+node_modules/
+.DS_Store
+*.log

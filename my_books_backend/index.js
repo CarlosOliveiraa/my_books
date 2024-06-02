@@ -1,16 +1,22 @@
+require('dotenv').config()
 const express = require('express')
 const mysql = require('mysql')
 const app = express()
 
 //Midlewares
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(express.json({ limit: '50mb' }))
+app.use(express.urlencoded({ extended: true, limit: '50mb' }))
+
+
 
 const conn = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'K@ike963',
-    database: 'nodemysql',
+
+
+
+    host: process.env.HOST,
+    user: process.env.DB_USER,
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE,
 })
 
 conn.connect(function (err) {
@@ -21,7 +27,7 @@ conn.connect(function (err) {
 
     console.log('Banco conectado com sucesso')
 
-    app.listen(3000)
+    app.listen(process.env.PORT)
 })
 
 //Routes
@@ -44,12 +50,13 @@ app.get('/allBooks', (req, res) => {
 
 app.post('/books/insertbook', (req, res) => {
     const title = req.body.title
-    const page = req.body.page
+    const pages = req.body.pages
     const description = req.body.description
     const image = req.body.image
+    console.log(req.body)
 
 
-    const query = `INSERT INTO books (title, page, description, image) VALUES ('${title}', '${page}', '${description}', '${image}')`
+    const query = `INSERT INTO books (title, pages, description, image) VALUES ('${title}', '${pages}', '${description}', '${image}')`
 
     conn.query(query, function (err) {
         if (err) {
@@ -57,6 +64,7 @@ app.post('/books/insertbook', (req, res) => {
         }
 
     })
+
 })
 
 app.post('/books/update', (req, res) => {
@@ -79,7 +87,7 @@ app.post('/books/update', (req, res) => {
 app.post('/books/remove/:id', (req, res) => {
     const id = req.params.id
 
-    const sql = `DELETE FROM books WHERE idbooks = ${id}`
+    const sql = `DELETE FROM books WHERE id = ${id}`
 
     conn.query(sql, function (err, data) {
         if (err) {
@@ -88,3 +96,16 @@ app.post('/books/remove/:id', (req, res) => {
         }
     })
 })
+
+// function base64toBlob(base64, mimeType) {
+//     const binaryString = atob(base64);
+
+//     const len = binaryString.length;
+
+//     const bytes = new Uint8Array(len);
+//     for (let i = 0; i < len; i++) {
+//         bytes[i] = binaryString.charCodeAt(i);
+//     }
+
+//     return new Blob([bytes], { type: mimeType });
+// }
