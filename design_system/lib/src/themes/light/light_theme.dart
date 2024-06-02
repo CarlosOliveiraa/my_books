@@ -1,3 +1,4 @@
+import 'package:design_system/src/colors/colors.dart';
 import 'package:flutter/material.dart';
 
 final lightTheme = ThemeData(
@@ -7,5 +8,5 @@ final lightTheme = ThemeData(
     primary: const Color(0xff49f170),
   ),
   useMaterial3: true,
-  extensions: const [],
+  extensions: [colors],
 );
