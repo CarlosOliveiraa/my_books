@@ -13,6 +13,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   design_system: 
       path: ../design_system  
+  image_picker: ^1.0.7
+  http: ^1.1.0
+  flutter_bloc: ^8.1.5
+  uno: ^1.1.9
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
@@ -21,7 +26,9 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - .env
     - assets/images/png/book.png
+    - assets/images/png/adicionar-imagem.png
 
   
   
