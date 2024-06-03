@@ -12,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../controllers/my_books_controller.dart';
 import 'widgets/my_books_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InsertBookPage extends StatefulWidget {
   const InsertBookPage({super.key});
@@ -52,10 +53,11 @@ class _InsertBookPageState extends State<InsertBookPage> {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<ColorsExtensions>();
+    final locale = AppLocalizations.of(context)!;
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Inserir livro'),
+          title: Text(locale.insert),
         ),
         body: SingleChildScrollView(
           child: Center(
@@ -64,20 +66,20 @@ class _InsertBookPageState extends State<InsertBookPage> {
               child: Column(
                 children: [
                   MyBooksTextField(
-                    hintText: 'Título',
+                    hintText: locale.title,
                     textInputAction: TextInputAction.next,
                     controller: titleController,
                   ),
                   const SizedBox(height: 10),
                   MyBooksTextField(
-                    hintText: 'Quantidade de páginas',
+                    hintText: locale.pages,
                     textInputAction: TextInputAction.next,
                     controller: pagesController,
                   ),
                   const SizedBox(height: 10),
                   MyBooksTextField(
                     maxLines: 4,
-                    hintText: 'Decrição',
+                    hintText: locale.description,
                     textInputAction: TextInputAction.done,
                     controller: descriptionController,
                   ),
@@ -100,7 +102,7 @@ class _InsertBookPageState extends State<InsertBookPage> {
           child: MyBooksButton(
               width: 300,
               height: 50,
-              title: 'Inserir livro',
+              title: locale.insert,
               backgroundColor: colors!.primaryColor,
               onTap: () {
                 booksController.insertBook(

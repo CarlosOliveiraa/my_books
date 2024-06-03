@@ -1,0 +1,34 @@
+{
+    "welcome": "Bem vindo",
+    "@welcome":{
+        "description": "Mensagem de boas vindas"
+    },
+    "failedLoad": "Falha ao carregar os livros",
+    "@failedLoad":{
+        "description": "Mensagem é apresentada quando há falha ao carregar dados"
+    },
+    "insert": "Inserir livro",
+    "@insert":{
+        "description": "Título de inserir livro"
+    },
+    "title": "Título",
+    "@title":{
+        "description": "Título do livro"
+    },
+    "pages": "Páginas",
+    "@pages":{
+        "description": "Quantidade de páginas"
+    },
+    "description": "Descrição",
+    "@description":{
+        "description": "Book Description"
+    },
+    "detail": "Detalhes do Livro",
+    "@detail":{
+        "description": "Book Detail"
+    },
+    "remove": "Remover livro",
+    "@remove":{
+        "description": "Remove book"
+    }
+}

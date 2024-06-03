@@ -1,0 +1,34 @@
+{
+    "welcome": "Welcome",
+    "@welcome":{
+        "description": "The current Language"
+    },
+    "failedLoad": "Failed to load books",
+    "@failedLoad":{
+        "description": "Message is presented when failed to load books"
+    },
+    "insert": "Insert Book",
+    "@insert":{
+        "description": "Button insert book"
+    },
+    "title": "Title",
+    "@title":{
+        "description": "Book title"
+    },
+    "pages": "Pages",
+    "@pages":{
+        "description": "Book pages"
+    },
+    "description": "Description",
+    "@description":{
+        "description": "Book Description"
+    },
+    "detail": "Book Detail",
+    "@detail":{
+        "description": "Book Detail"
+    },
+    "remove": "Remove book",
+    "@remove":{
+        "description": "Remove book"
+    }
+}

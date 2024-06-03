@@ -11,6 +11,7 @@ import 'package:flutter_my_books/src/pages/widgets/my_books_button.dart';
 import 'package:flutter_my_books/src/services/bloc/fetch_books/blocs/fetch_books_bloc.dart';
 import 'package:flutter_my_books/src/services/bloc/fetch_books/events/fetch_books_events.dart';
 import 'package:flutter_my_books/src/services/bloc/fetch_books/states/fetch_books_state.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -32,6 +33,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     context.read<FetchBooksBloc>().add(FetchBooksFetchEvent());
+    final locale = AppLocalizations.of(context)!;
     final colors = Theme.of(context).extension<ColorsExtensions>();
     debugPrint('Cor primária => ${colors!.primaryColor}');
 
@@ -43,7 +45,7 @@ class _HomePageState extends State<HomePage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Bem vindo'),
+          title: Text(locale.welcome),
         ),
         body: BlocBuilder<FetchBooksBloc, FetchBooksState>(
           builder: (context, state) {
@@ -52,8 +54,8 @@ class _HomePageState extends State<HomePage> {
                 child: CircularProgressIndicator(),
               );
             } else if (state is FetchBooksErrorState) {
-              return const Center(
-                child: Text('Erro ao carregar os dados'),
+              return Center(
+                child: Text(locale.failedLoad),
               );
             } else if (state is FetchBooksSuccesState) {
               return ListView.builder(
@@ -79,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                 },
               );
             } else {
-              return const Center(child: Text('Failed to load books'));
+              return Center(child: Text(locale.failedLoad));
             }
           },
         ),
@@ -88,7 +90,7 @@ class _HomePageState extends State<HomePage> {
           child: MyBooksButton(
             width: 300,
             height: 50,
-            title: 'Adicionar',
+            title: locale.insert,
             onTap: () {
               Navigator.push(
                 context,

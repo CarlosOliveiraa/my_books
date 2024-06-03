@@ -7,7 +7,7 @@ import 'package:flutter_my_books/src/controllers/my_books_controller.dart';
 import 'package:flutter_my_books/src/models/my_books_model.dart';
 import 'package:flutter_my_books/src/services/bloc/fetch_books/blocs/fetch_books_bloc.dart';
 import 'package:flutter_my_books/src/services/bloc/fetch_books/events/fetch_books_events.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'widgets/my_books_button.dart';
 
 class BookDetailPage extends StatefulWidget {
@@ -29,10 +29,11 @@ class _BookDetailPageState extends State<BookDetailPage> {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<ColorsExtensions>();
+    final locale = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Detalhes do livro'),
+        title: Text(locale.detail),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -44,7 +45,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Título: ${book.title!}',
+                '${locale.title}: ${book.title!}',
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium!
@@ -54,7 +55,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Páginas: ${book.pages!}',
+                '${locale.pages}: ${book.pages!}',
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium!
@@ -64,7 +65,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Descrição:\n${book.description!}',
+                '${locale.description}:\n${book.description!}',
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium!
@@ -79,7 +80,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
         child: MyBooksButton(
           width: 300,
           height: 50,
-          title: 'Remover Livro',
+          title: locale.remove,
           onTap: () {
             controller.removeBook(book.id!);
             context.read<FetchBooksBloc>().add(FetchBooksFetchEvent());
