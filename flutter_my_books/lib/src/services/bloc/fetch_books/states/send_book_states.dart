@@ -1,9 +1,13 @@
-abstract class SendBookState {}
+abstract class SendBookStates {}
 
-class SendBookInitialState extends SendBookState {}
+class SendBookInitialState extends SendBookStates {}
 
-class SendBookErrorState extends SendBookState {}
+class SendBookLoadingState extends SendBookStates {}
 
-class SendBookLoadState extends SendBookState {}
+class SendBookSuccessState extends SendBookStates {}
 
-class SendBookSuccessState extends SendBookState {}
+class SendBookErrorState extends SendBookStates {
+  final String message;
+
+  SendBookErrorState({required this.message});
+}

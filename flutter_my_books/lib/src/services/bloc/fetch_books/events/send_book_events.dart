@@ -1,8 +1,9 @@
+import '../../../../models/params/book_params.dart';
+
 abstract class SendBookEvent {}
 
-class SendBookSendEvent extends SendBookEvent {}
+class BookAddedEvent extends SendBookEvent {
+  final BookParams params;
 
-
-// class SendBookErrorState extends SendBookEvent {}
-
-// class SendBookSuccessState extends SendBookEvent {}
+  BookAddedEvent({required this.params});
+}

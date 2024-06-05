@@ -7,10 +7,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_my_books/src/models/params/book_params.dart';
 import 'package:flutter_my_books/src/pages/widgets/add_image_widget.dart';
 import 'package:flutter_my_books/src/services/bloc/fetch_books/blocs/fetch_books_bloc.dart';
+import 'package:flutter_my_books/src/services/bloc/fetch_books/blocs/send_book_bloc.dart';
 import 'package:flutter_my_books/src/services/bloc/fetch_books/events/fetch_books_events.dart';
+import 'package:flutter_my_books/src/services/bloc/fetch_books/states/send_book_states.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../controllers/my_books_controller.dart';
+import '../services/bloc/fetch_books/events/send_book_events.dart';
 import 'widgets/my_books_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -99,23 +102,36 @@ class _InsertBookPageState extends State<InsertBookPage> {
         ),
         bottomNavigationBar: Container(
           padding: const EdgeInsets.all(16),
-          child: MyBooksButton(
-              width: 300,
-              height: 50,
-              title: locale.insert,
-              backgroundColor: colors!.primaryColor,
-              onTap: () {
-                booksController.insertBook(
-                  params: BookParams(
-                    title: titleController.text,
-                    pages: int.parse(pagesController.text),
-                    description: descriptionController.text,
-                    image: _convertImageToByte(_image!),
-                  ),
-                );
-                context.read<FetchBooksBloc>().add(FetchBooksFetchEvent());
-                Navigator.pop(context, true);
-              }),
+          child: BlocConsumer<SendBookBloc, SendBookStates>(
+              listener: (context, state) {
+            if (state is SendBookSuccessState) {
+              context.read<FetchBooksBloc>().add(FetchBooksFetchEvent());
+              Navigator.pop(context, true);
+            }
+          }, builder: (context, state) {
+            if (state is SendBookLoadingState) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            return MyBooksButton(
+                width: 300,
+                height: 50,
+                title: locale.insert,
+                backgroundColor: colors!.primaryColor,
+                onTap: () {
+                  final imageBytes = _convertImageToByte(_image!);
+
+                  context.read<SendBookBloc>().add(
+                        BookAddedEvent(
+                          params: BookParams(
+                            title: titleController.text,
+                            pages: int.parse(pagesController.text),
+                            description: descriptionController.text,
+                            image: imageBytes,
+                          ),
+                        ),
+                      );
+                });
+          }),
         ));
   }
 }

@@ -12,6 +12,7 @@ class FetchBooksBloc extends Bloc<FetchBooksEvents, FetchBooksState> {
   Future<void> _fetchBooks(
       FetchBooksFetchEvent event, Emitter<FetchBooksState> emit) async {
     try {
+      emit(FetchBooksInitialState());
       final books = await booksController.fetchBooks();
       emit(FetchBooksSuccesState(books: books));
     } catch (e) {

@@ -63,6 +63,7 @@ app.post('/books/insertbook', (req, res) => {
             console.log(err)
         }
 
+        res.status(200).send('Livro inserido com sucesso')
     })
 
 })

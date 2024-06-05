@@ -10,6 +10,7 @@ class EmptyList extends StatelessWidget {
     debugPrint('Brightness => $brightness');
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(
           width: 150,
