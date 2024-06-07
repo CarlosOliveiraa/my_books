@@ -1,11 +1,12 @@
 const express = require('express')
+const authMiddleware = require('../middlewares/auth')
 
 
 module.exports = (db) => {
     const router = express.Router()
 
     //Get All Books
-    router.get('/allbooks', (req, res) => {
+    router.get('/allbooks', authMiddleware, (req, res) => {
         try {
             const query = `SELECT * FROM books`
             db.query(query, (err, result) => {

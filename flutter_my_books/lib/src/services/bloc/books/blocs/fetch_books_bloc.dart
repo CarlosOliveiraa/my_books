@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_my_books/src/controllers/my_books_controller.dart';
-import 'package:flutter_my_books/src/services/bloc/fetch_books/events/fetch_books_events.dart';
-import 'package:flutter_my_books/src/services/bloc/fetch_books/states/fetch_books_state.dart';
+import 'package:flutter_my_books/src/controllers/books/my_books_controller.dart';
+import 'package:flutter_my_books/src/services/bloc/books/events/fetch_books_events.dart';
+import 'package:flutter_my_books/src/services/bloc/books/states/fetch_books_state.dart';
 
 class FetchBooksBloc extends Bloc<FetchBooksEvents, FetchBooksState> {
   final MyBooksController booksController;

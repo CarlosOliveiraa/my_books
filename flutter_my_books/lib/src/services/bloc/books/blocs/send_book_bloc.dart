@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_my_books/src/controllers/my_books_controller.dart';
-import 'package:flutter_my_books/src/services/bloc/fetch_books/events/send_book_events.dart';
-import 'package:flutter_my_books/src/services/bloc/fetch_books/states/send_book_states.dart';
+import 'package:flutter_my_books/src/controllers/books/my_books_controller.dart';
+import 'package:flutter_my_books/src/services/bloc/books/events/send_book_events.dart';
+import 'package:flutter_my_books/src/services/bloc/books/states/send_book_states.dart';
 
 class SendBookBloc extends Bloc<SendBookEvent, SendBookStates> {
   final MyBooksController _booksController;

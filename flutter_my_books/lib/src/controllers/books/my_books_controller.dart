@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_my_books/src/models/my_books_model.dart';
-import 'package:flutter_my_books/src/models/params/book_params.dart';
+import 'package:flutter_my_books/src/models/books/my_books_model.dart';
+import 'package:flutter_my_books/src/params/book_params.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyBooksController {
   Future<void> insertBook({required BookParams params}) async {
@@ -14,6 +15,7 @@ class MyBooksController {
       'pages': params.pages,
       'description': params.description,
       'image': imageBase64,
+      'userid': params.userid,
     });
     try {
       final response = await http.post(
@@ -33,9 +35,13 @@ class MyBooksController {
   }
 
   Future<List<MyBooksModel>> fetchBooks() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
     try {
-      final response =
-          await http.get(Uri.parse('${dotenv.env["BASE_URL"]}/allBooks'));
+      final response = await http.get(
+          Uri.parse('${dotenv.env["BASE_URL"]}/books/allbooks'),
+          headers: {'Authorization': 'Bearer $token'});
       return MyBooksModel.fromList(response.body);
     } catch (e) {
       return throw (e.toString());

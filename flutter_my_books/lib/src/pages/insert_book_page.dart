@@ -4,21 +4,24 @@ import 'dart:typed_data';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_my_books/src/models/params/book_params.dart';
+import 'package:flutter_my_books/src/params/book_params.dart';
 import 'package:flutter_my_books/src/pages/widgets/add_image_widget.dart';
-import 'package:flutter_my_books/src/services/bloc/fetch_books/blocs/fetch_books_bloc.dart';
-import 'package:flutter_my_books/src/services/bloc/fetch_books/blocs/send_book_bloc.dart';
-import 'package:flutter_my_books/src/services/bloc/fetch_books/events/fetch_books_events.dart';
-import 'package:flutter_my_books/src/services/bloc/fetch_books/states/send_book_states.dart';
+import 'package:flutter_my_books/src/services/bloc/books/blocs/fetch_books_bloc.dart';
+import 'package:flutter_my_books/src/services/bloc/books/blocs/send_book_bloc.dart';
+import 'package:flutter_my_books/src/services/bloc/books/events/fetch_books_events.dart';
+import 'package:flutter_my_books/src/services/bloc/books/states/send_book_states.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../controllers/my_books_controller.dart';
-import '../services/bloc/fetch_books/events/send_book_events.dart';
+import '../controllers/books/my_books_controller.dart';
+import '../models/users/user_model.dart';
+import '../services/bloc/books/events/send_book_events.dart';
 import 'widgets/my_books_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InsertBookPage extends StatefulWidget {
-  const InsertBookPage({super.key});
+  final UserModel user;
+
+  const InsertBookPage({super.key, required this.user});
 
   @override
   State<InsertBookPage> createState() => _InsertBookPageState();
@@ -123,11 +126,11 @@ class _InsertBookPageState extends State<InsertBookPage> {
                   context.read<SendBookBloc>().add(
                         BookAddedEvent(
                           params: BookParams(
-                            title: titleController.text,
-                            pages: int.parse(pagesController.text),
-                            description: descriptionController.text,
-                            image: imageBytes,
-                          ),
+                              title: titleController.text,
+                              pages: int.parse(pagesController.text),
+                              description: descriptionController.text,
+                              image: imageBytes,
+                              userid: widget.user.id!),
                         ),
                       );
                 });

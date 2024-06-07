@@ -2,11 +2,13 @@ import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_my_books/l10n/l10n.dart';
-import 'package:flutter_my_books/src/controllers/my_books_controller.dart';
-import 'package:flutter_my_books/src/pages/home_page.dart';
-import 'package:flutter_my_books/src/services/bloc/fetch_books/blocs/send_book_bloc.dart';
+import 'package:flutter_my_books/src/controllers/auth/auth_controller.dart';
+import 'package:flutter_my_books/src/controllers/books/my_books_controller.dart';
+import 'package:flutter_my_books/src/pages/auth/login_page.dart';
+import 'package:flutter_my_books/src/services/bloc/auth/bloc/auth_bloc.dart';
+import 'package:flutter_my_books/src/services/bloc/books/blocs/send_book_bloc.dart';
 
-import 'services/bloc/fetch_books/blocs/fetch_books_bloc.dart';
+import 'services/bloc/books/blocs/fetch_books_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -16,9 +18,11 @@ class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = MyBooksController();
+    final authController = AuthController();
 
     return MultiBlocProvider(
       providers: [
+        BlocProvider(create: (context) => AuthBloc(authController)),
         BlocProvider(create: (context) => FetchBooksBloc(controller)),
         BlocProvider(create: (context) => SendBookBloc(controller)),
       ],
@@ -33,7 +37,7 @@ class AppWidget extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        home: const HomePage(),
+        home: const LoginPage(),
       ),
     );
   }

@@ -46,7 +46,7 @@ module.exports = (db) => {
     });
 
     // Endpoint de login
-    router.post('/login', (req, res) => {
+    router.post('/login', async (req, res) => {
         const { email, password } = req.body;
 
         db.query('SELECT * FROM users WHERE email = ?', [email], async (err, results) => {
@@ -63,7 +63,7 @@ module.exports = (db) => {
                 return res.status(401).json({ error: 'Senha inválida' });
             }
 
-            const token = jwt.sign({ id: user.id }, 'seu_jwt_secreto', { expiresIn: '1h' });
+            const token = jwt.sign({ id: user.id, name: user.name, email: user.email }, 'seu_jwt_secreto', { expiresIn: '1h' });
             res.json({ token });
         });
     });

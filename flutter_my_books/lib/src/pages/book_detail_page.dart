@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_my_books/src/controllers/my_books_controller.dart';
-import 'package:flutter_my_books/src/models/my_books_model.dart';
-import 'package:flutter_my_books/src/services/bloc/fetch_books/blocs/fetch_books_bloc.dart';
-import 'package:flutter_my_books/src/services/bloc/fetch_books/events/fetch_books_events.dart';
+import 'package:flutter_my_books/src/controllers/books/my_books_controller.dart';
+import 'package:flutter_my_books/src/models/books/my_books_model.dart';
+import 'package:flutter_my_books/src/services/bloc/books/blocs/fetch_books_bloc.dart';
+import 'package:flutter_my_books/src/services/bloc/books/events/fetch_books_events.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'widgets/my_books_button.dart';
 

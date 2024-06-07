@@ -3,18 +3,22 @@ import 'dart:convert';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_my_books/src/controllers/my_books_controller.dart';
+import 'package:flutter_my_books/src/controllers/books/my_books_controller.dart';
 import 'package:flutter_my_books/src/pages/book_detail_page.dart';
 import 'package:flutter_my_books/src/pages/insert_book_page.dart';
 import 'package:flutter_my_books/src/pages/widgets/empty_list.dart';
 import 'package:flutter_my_books/src/pages/widgets/my_books_button.dart';
-import 'package:flutter_my_books/src/services/bloc/fetch_books/blocs/fetch_books_bloc.dart';
-import 'package:flutter_my_books/src/services/bloc/fetch_books/events/fetch_books_events.dart';
-import 'package:flutter_my_books/src/services/bloc/fetch_books/states/fetch_books_state.dart';
+import 'package:flutter_my_books/src/services/bloc/books/blocs/fetch_books_bloc.dart';
+import 'package:flutter_my_books/src/services/bloc/books/events/fetch_books_events.dart';
+import 'package:flutter_my_books/src/services/bloc/books/states/fetch_books_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../models/users/user_model.dart';
+
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final UserModel user;
+
+  const HomePage({super.key, required this.user});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -91,7 +95,8 @@ class _HomePageState extends State<HomePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (BuildContext context) => const InsertBookPage(),
+                builder: (BuildContext context) =>
+                    InsertBookPage(user: widget.user),
               ),
             );
           },

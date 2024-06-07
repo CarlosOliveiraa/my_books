@@ -1,4 +1,4 @@
-import '../../../../models/my_books_model.dart';
+import '../../../../models/books/my_books_model.dart';
 
 abstract class FetchBooksState {
   final List<MyBooksModel> books;

@@ -1,4 +1,4 @@
-import '../../../../models/params/book_params.dart';
+import '../../../../params/book_params.dart';
 
 abstract class SendBookEvent {}
 
