@@ -1,15 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_my_books/src/models/auth/auth_model.dart';
 import 'package:flutter_my_books/src/params/user_params.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../models/users/user_model.dart';
-import 'package:jwt_decode/jwt_decode.dart';
-
 class AuthController {
-  Future<UserModel> login(
+  Future<AuthModel> login(
       {required String email, required String password}) async {
     try {
       final body = jsonEncode({'email': email, 'password': password});
@@ -25,8 +23,8 @@ class AuthController {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', token);
       }
-      final decodedToken = Jwt.parseJwt(jsonDecode(result.body)['token']);
-      return UserModel.fromJson(decodedToken);
+
+      return AuthModel.fromJson(jsonDecode(result.body));
     } catch (error) {
       throw error.toString();
     }
@@ -34,10 +32,13 @@ class AuthController {
 
   Future<int> signUp({required UserParams params}) async {
     try {
+      String imageBase64 = base64Encode(params.imageProfile);
+
       final body = {
         'name': params.name,
         'email': params.email,
-        'password': params.password
+        'password': params.password,
+        'imageProfile': imageBase64,
       };
       final result = await http.post(
           Uri.parse('${dotenv.env["BASE_URL"]}/auth/register'),

@@ -37,6 +37,10 @@ app.use('/auth', authRoutes)
 const booksRoutes = require('./routes/books')(conn)
 app.use('/books', booksRoutes)
 
+//UserRoutes
+const userRoutes = require('./routes/users')(conn)
+app.use('/user', userRoutes)
+
 
 
 

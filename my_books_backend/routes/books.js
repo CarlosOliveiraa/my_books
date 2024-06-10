@@ -6,7 +6,7 @@ module.exports = (db) => {
     const router = express.Router()
 
     //Get All Books
-    router.get('/allbooks', authMiddleware, (req, res) => {
+    router.get('/allbooks', authMiddleware, async (req, res) => {
         try {
             const query = `SELECT * FROM books`
             db.query(query, (err, result) => {
@@ -25,7 +25,7 @@ module.exports = (db) => {
     })
 
     //Register books
-    router.post('/insertbook', (req, res) => {
+    router.post('/insertbook', async (req, res) => {
         const { title, pages, description, image, userid } = req.body; // Use 'userId' aqui
 
         if (!title || !pages || !description || !image || !userid) {
@@ -45,7 +45,7 @@ module.exports = (db) => {
     });
 
     //Update books
-    router.post('/update', (req, res) => {
+    router.post('/update', async (req, res) => {
         const { id, title, pages, description, image } = req.body;
         const query = `UPDATE books SET title = ?, pages = ?, description = ?, image = ? WHERE id = ?`; // Corrigindo o nome do campo WHERE
 
@@ -62,7 +62,7 @@ module.exports = (db) => {
 
 
     //Remove books
-    router.post('/remove/:id', (req, res) => {
+    router.post('/remove/:id', async (req, res) => {
         const { id } = req.params
 
         const sql = `DELETE FROM books WHERE id = ?`

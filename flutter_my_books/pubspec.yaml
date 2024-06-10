@@ -23,6 +23,8 @@ dependencies:
   flutter_dotenv: ^5.1.0
   jwt_decode: ^0.3.1
   shared_preferences: ^2.2.2
+  image: ^4.2.0
+  image_cropper: ^5.0.1
 
 dev_dependencies:
   flutter_test:

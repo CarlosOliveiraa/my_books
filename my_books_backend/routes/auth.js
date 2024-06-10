@@ -7,7 +7,7 @@ module.exports = (db) => {
 
     // Endpoint de registro
     router.post('/register', async (req, res) => {
-        const { name, email, password } = req.body;
+        const { name, email, password, imageProfile } = req.body;
 
         console.log('Request Body:', req.body);
 
@@ -18,8 +18,8 @@ module.exports = (db) => {
         try {
             const hashedPassword = await bcrypt.hash(password, 10);
             db.query(
-                'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
-                [name, email, hashedPassword],
+                'INSERT INTO users (name, email, password, imageProfile) VALUES (?, ?, ?, ?)',
+                [name, email, hashedPassword, imageProfile],
                 (err, result) => {
                     if (err) {
                         if (err.code === 'ER_DUP_ENTRY') {
@@ -63,10 +63,24 @@ module.exports = (db) => {
                 return res.status(401).json({ error: 'Senha inválida' });
             }
 
-            const token = jwt.sign({ id: user.id, name: user.name, email: user.email }, 'seu_jwt_secreto', { expiresIn: '1h' });
+            const token = jwt.sign({ id: user.id }, 'seu_jwt_secreto', { expiresIn: '1h' });
             res.json({ token });
         });
     });
+
+    router.post('/delete/:id', (req, res) => {
+        const { id } = req.params
+
+        const sql = `DELETE FROM users WHERE id = ?`
+
+        db.query(sql, [id], (err, result) => {
+            if (err) {
+                console.log(err)
+                res.status(400).json({ error: 'Erro ao remover dados' })
+            }
+            res.status(201).json({ message: 'Item removido com sucesso' })
+        })
+    })
 
     return router;
 };

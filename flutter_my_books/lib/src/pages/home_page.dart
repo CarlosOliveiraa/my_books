@@ -4,21 +4,22 @@ import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_my_books/src/controllers/books/my_books_controller.dart';
+import 'package:flutter_my_books/src/controllers/users/user_controller.dart';
 import 'package:flutter_my_books/src/pages/book_detail_page.dart';
 import 'package:flutter_my_books/src/pages/insert_book_page.dart';
 import 'package:flutter_my_books/src/pages/widgets/empty_list.dart';
-import 'package:flutter_my_books/src/pages/widgets/my_books_button.dart';
 import 'package:flutter_my_books/src/services/bloc/books/blocs/fetch_books_bloc.dart';
 import 'package:flutter_my_books/src/services/bloc/books/events/fetch_books_events.dart';
 import 'package:flutter_my_books/src/services/bloc/books/states/fetch_books_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import '../models/users/user_model.dart';
+import 'package:flutter_my_books/src/services/bloc/user/bloc/user_bloc.dart';
+import 'package:flutter_my_books/src/services/bloc/user/event/user_events.dart';
+import 'package:flutter_my_books/src/services/bloc/user/states/user_states.dart';
+import 'profile/profile_page.dart';
+import 'widgets/base64_circle_avatar.dart';
 
 class HomePage extends StatefulWidget {
-  final UserModel user;
-
-  const HomePage({super.key, required this.user});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -26,11 +27,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final controller = MyBooksController();
+  final userController = UserController();
 
   @override
   void initState() {
     super.initState();
-    context.read<FetchBooksBloc>().add(FetchBooksFetchEvent());
+    context.read<UserBloc>().add(FetchUserDataEvent());
   }
 
   @override
@@ -40,68 +42,106 @@ class _HomePageState extends State<HomePage> {
     debugPrint('Cor primária => ${colors!.primaryColor}');
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(locale.welcome),
-      ),
-      body: BlocBuilder<FetchBooksBloc, FetchBooksState>(
-        builder: (context, state) {
-          final books = state.books;
+      body: CustomScrollView(
+        slivers: [
+          const SliverAppBar(
+            floating: true,
+            flexibleSpace: FlexibleSpaceBar(
+              titlePadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              title: Text('Bem vindo'),
+            ),
+          ),
+          BlocBuilder<FetchBooksBloc, FetchBooksState>(
+            builder: (context, state) {
+              final books = state.books;
 
-          if (state is FetchBooksInitialState) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (state is FetchBooksErrorState) {
-            return Center(
-              child: Text(locale.failedLoad),
-            );
-          } else if (state.books.isEmpty) {
-            return const Center(child: EmptyList());
-          } else if (state is FetchBooksSuccesState) {
-            return ListView.builder(
-              itemCount: books.length,
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                final book = books[index];
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                BookDetailPage(book: book)));
-                  },
-                  child: ListTile(
-                    leading: Image.memory(base64Decode(book.image!)),
-                    title: Text(book.title!),
-                    subtitle: Text(book.description!),
+              if (state is FetchBooksInitialState) {
+                return const SliverFillRemaining(
+                  child: Center(
+                    child: CircularProgressIndicator(),
                   ),
                 );
-              },
-            );
-          } else {
-            return Center(child: Text(locale.failedLoad));
-          }
-        },
+              } else if (state is FetchBooksErrorState) {
+                return const SliverFillRemaining(
+                  child: Center(
+                    child: Text('Failed to load books'),
+                  ),
+                );
+              } else if (state.books.isEmpty) {
+                return const SliverFillRemaining(
+                    child: Center(child: EmptyList()));
+              } else if (state is FetchBooksSuccesState) {
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate(childCount: books.length,
+                      (context, index) {
+                    final book = books[index];
+
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    BookDetailPage(book: book)));
+                      },
+                      child: ListTile(
+                        leading: Image.memory(base64Decode(book.image!)),
+                        title: Text(book.title!),
+                        subtitle: Text(book.description!),
+                      ),
+                    );
+                  }),
+                );
+              } else {
+                return Center(child: Text(locale.failedLoad));
+              }
+            },
+          )
+        ],
       ),
       bottomNavigationBar: Container(
+        height: 75,
         padding: const EdgeInsets.all(15),
-        child: MyBooksButton(
-          width: 300,
-          height: 50,
-          title: locale.insert,
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    InsertBookPage(user: widget.user),
-              ),
+        child: BlocBuilder<UserBloc, UserStates>(builder: (context, state) {
+          if (state is FetchUserDataSuccessState) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Icon(
+                  Icons.home,
+                  size: 32,
+                ),
+                const Icon(Icons.search, size: 32),
+                InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              InsertBookPage(user: state.user),
+                        ),
+                      );
+                    },
+                    child: const Icon(Icons.add_box_outlined, size: 32)),
+                const Icon(Icons.notes, size: 32),
+                InkWell(
+                    borderRadius: BorderRadius.circular(18),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProfilePage(
+                                    user: state.user,
+                                  )));
+                    },
+                    child: Base64CircleAvatar(
+                        base64String: state.user.imageProfile!))
+              ],
             );
-          },
-          backgroundColor: colors.primaryColor,
-        ),
+          } else {
+            return Container();
+          }
+        }),
       ),
     );
   }
