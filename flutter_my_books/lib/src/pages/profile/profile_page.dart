@@ -1,3 +1,4 @@
+import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_my_books/src/pages/book_detail_page.dart';
@@ -75,7 +76,19 @@ class _ProfilePageState extends State<ProfilePage> {
             BlocBuilder<FetchBooksBloc, FetchBooksState>(
               builder: (context, state) {
                 if (state is FetchBooksInitialState) {
-                  return Container();
+                  return SizedBox(
+                    height: 170,
+                    child: ListView.separated(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      itemCount: 5,
+                      scrollDirection: Axis.horizontal,
+                      separatorBuilder: ((context, index) =>
+                          const SizedBox(width: 10)),
+                      itemBuilder: ((context, index) {
+                        return const BookCardShimmer();
+                      }),
+                    ),
+                  );
                 } else if (state is FetchBooksSuccesState) {
                   return SizedBox(
                     height: 170,
@@ -83,7 +96,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       itemCount: state.books.length,
                       scrollDirection: Axis.horizontal,
-                      separatorBuilder: ((context, index) => const SizedBox()),
+                      separatorBuilder: ((context, index) =>
+                          const SizedBox(width: 10)),
                       itemBuilder: ((context, index) {
                         return InkWell(
                           onTap: () {
@@ -107,7 +121,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   return Container();
                 }
               },
-            )
+            ),
           ],
         ),
       ),

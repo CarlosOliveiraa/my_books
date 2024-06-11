@@ -9,7 +9,6 @@ import 'package:flutter_my_books/src/pages/book_detail_page.dart';
 import 'package:flutter_my_books/src/pages/insert_book_page.dart';
 import 'package:flutter_my_books/src/pages/widgets/empty_list.dart';
 import 'package:flutter_my_books/src/services/bloc/books/blocs/fetch_books_bloc.dart';
-import 'package:flutter_my_books/src/services/bloc/books/events/fetch_books_events.dart';
 import 'package:flutter_my_books/src/services/bloc/books/states/fetch_books_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_my_books/src/services/bloc/user/bloc/user_bloc.dart';
